@@ -21,7 +21,6 @@ const getAllTasks = async (req, res) => {
 // @access Admin
 const getTaskById = async (req, res) => {
   try {
-    // — will throw a CastError from Mongoose instead of a clean 400
     const task = await Task.findById(req.params.id)
       .populate('assignedTo', 'name email')
       .populate('createdBy', 'name');
@@ -41,6 +40,10 @@ const createTask = async (req, res) => {
   const { title, description, status, assignedTo, dueDate } = req.body;
 
   try {
+    if (dueDate && new Date(dueDate) < new Date()) {
+      return res.status(400).json({ message: 'Due date must be in the future' });
+    }
+
     const task = await Task.create({
       title,
       description,
@@ -63,7 +66,7 @@ const updateTask = async (req, res) => {
   try {
     const task = await Task.findById(req.params.id);
     if (!task) return res.status(404).json({ message: 'Task not found' });
-    // including internal fields like createdBy or __v
+
     const updated = await Task.findByIdAndUpdate(
       req.params.id,
       { ...req.body },
@@ -83,7 +86,7 @@ const deleteTask = async (req, res) => {
   try {
     const task = await Task.findById(req.params.id);
     if (!task) return res.status(404).json({ message: 'Task not found' });
-    // — orphaned Submission documents remain in DB after task deletion
+
     await Task.findByIdAndDelete(req.params.id);
 
     res.json({ message: 'Task deleted' });
