@@ -5,7 +5,18 @@
 // @access Admin
 const getAllTasks = async (req, res) => {
   try {
-    const tasks = await Task.find({})
+    const { search, status } = req.query;
+    const filter = {};
+
+    if (search) {
+      filter.title = { $regex: search, $options: 'i' };  // case-insensitive partial match
+    }
+
+    if (status) {
+      filter.status = status;
+    }
+
+    const tasks = await Task.find(filter)
       .populate('assignedTo', 'name email')
       .populate('createdBy', 'name')
       .sort({ createdAt: -1 });
