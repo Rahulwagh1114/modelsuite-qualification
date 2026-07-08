@@ -63,10 +63,10 @@ const AdminDashboard = () => {
   });
 
   return (
-    <div className="flex min-h-screen" style={{ background: '#050505' }}>
+    <div className="flex min-h-screen overflow-x-hidden" style={{ background: '#050505' }}>
       <Sidebar />
 
-      <main className="ml-[240px] flex-1 px-8 py-8" style={{ maxWidth: 'calc(100vw - 240px)' }}>
+      <main className="ml-[240px] flex-1 min-w-0 px-8 py-8">
 
         {/* Page header */}
         <div className="flex items-center justify-between mb-7 page-section">
@@ -105,7 +105,7 @@ const AdminDashboard = () => {
         </div>
 
         {/* Tasks table */}
-        <div className="tasks-container page-section">
+        <div className="tasks-container page-section min-w-0 overflow-hidden">
           {/* Table toolbar */}
           <div className="table-header-bar">
             <div className="flex items-center gap-2">
