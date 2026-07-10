@@ -8,7 +8,7 @@ const REVIEW_STATUS_CLASS = {
 
 const SubmissionReviewModal = ({ submission, onClose, onReviewed }) => {
 
-  const handleReview = async (status) => {
+  const handleReview = async (status) => {     //fixed for Destructive Action
   if (status === 'Rejected') {
     const confirmed = window.confirm('Are you sure you want to reject this submission?');
     if (!confirmed) return;
